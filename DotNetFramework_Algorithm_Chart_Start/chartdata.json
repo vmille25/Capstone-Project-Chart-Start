@@ -14,6 +14,10 @@
 	],
 	"doubleTop":[
 		{"id":10,"symbol":"SPLP","startdate":"12/8/2020","enddate":"12/16/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/doubleTop/SPLP.png"}
+	],
+	"doubleBottom":[
+		{"id":11,"symbol":"LAZR","startdate":"10/14/2020","enddate":"11/25/2020","interval":5,"name":"Luminar Technologies, Inc.","image":"/images/doubleBottom/LAZR.png"},
+		{"id":12,"symbol":"CNI","startdate":"2/16/2021","enddate":"2/24/2021","interval":1,"name":"Canadian National Railway Company","image":"/images/doubleBottom/CNI.png"}
 	]
 
 }

@@ -7,4 +7,6 @@ IHS Pattern found for symbol: CNI on: 12/17/2020 12:00:00 AM with interval: 1 da
 HS Pattern found for symbol: FSKR on: 1/20/2021 12:00:00 AM with interval: 1 days
 HS Pattern found for symbol: LAZR on: 11/13/2020 12:00:00 AM with interval: 2 days
 HS Pattern found for symbol: CNI on: 12/31/2020 12:00:00 AM with interval: 3 days
-Double Bottom Pattern found for symbol: SPLP on: 12/16/2020 12:00:00 AM with interval: 1 days
+Double Top Pattern found for symbol: SPLP on: 12/16/2020 12:00:00 AM with interval: 1 days
+Double Bottom Pattern found for symbol: LAZR on: 11/25/2020 12:00:00 AM with interval: 5 days
+Double Bottom Pattern found for symbol: CNI on: 2/24/2021 12:00:00 AM with interval: 1 days
