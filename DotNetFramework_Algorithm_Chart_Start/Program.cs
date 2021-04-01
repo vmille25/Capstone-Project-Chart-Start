@@ -46,6 +46,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             string doubleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleTop";
 
+            string doubleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom";
+
             // if any images from previous runs is in the directory associated with a pattern, it is deleted
             // else create the directory as we will need it to hold our chart images
 
@@ -54,6 +56,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             clearImageDir(hsImagePath);
 
             clearImageDir(doubleTopImagePath);
+
+            clearImageDir(doubleBottomImagePath);
 
             // declare a stock data object to hold all the stock data for one ticker
             stockDataObj stock_dataobj = new stockDataObj()
@@ -78,6 +82,11 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             fixJSONdoc(JSONfilename);
 
+            File.AppendAllText(JSONfilename, "\t],\n");
+
+            searchForPattern(patterns.doubleBottom, tickers, stock_dataobj, startDate, endDate);
+
+            fixJSONdoc(JSONfilename);
             File.AppendAllText(JSONfilename, "\t]\n");
 
             // finish up the json file 
@@ -151,7 +160,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
     {
         ihs,
         hs,
-        doubleTop
+        doubleTop,
+        doubleBottom
     }
 
     class stockDataObj
@@ -164,6 +174,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
         public bool writtenIHS = false;
         public bool writtenHS = false;
         public bool writtendoubleTop = false;
+        public bool writtendoubleBottom = false;
 
         // getStockData accepts the ticker symbol, the startDate (6 months ago from today) and the endDate (today)
         // this is an asynchronous function meaning the code does not necessarily run sequentially
@@ -221,6 +232,17 @@ namespace DotNetFramework_Algorithm_Chart_Start
                 }
 
                 //File.AppendAllText(JSONfilename, "\t]\n");
+
+                if (pattern == patterns.doubleBottom)
+                {
+                    if (!writtendoubleBottom)
+                    {
+                        File.AppendAllText(JSONfilename, "\t\"doubleBottom\":[\n");
+                        writtendoubleBottom = true;
+                    }
+
+                    DoubleBottom_IntervalFormCheck(symbol);
+                }
 
             }
             catch
@@ -437,7 +459,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
             decimal firstTop;
             decimal secondTop;
             decimal middleBottom;
-            decimal pointSix;
+            decimal pointSix; // refer to the pattern_image_identifiers folder and the double_top image to understand where this point (and other numeric points) is on the pattern
 
             for (int i = 1; i < 15; i++)
             {
@@ -476,12 +498,12 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                         {
                                             //pattern found
 
-                                            Console.WriteLine("Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
-                                            File.AppendAllText(outputTxtFile, "Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
+                                            Console.WriteLine("Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                            File.AppendAllText(outputTxtFile, "Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
 
                                             string jsonImagePath = genChartReversed(patterns.doubleTop, symbol, j, i);
 
-                                            stockObj doubleBotObj = new stockObj()
+                                            stockObj doubleTopObj = new stockObj()
                                             {
                                                 id = idCount,
                                                 symbol = symbol,
@@ -494,7 +516,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
                                             idCount++;
 
-                                            File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(doubleBotObj) + ",\n");
+                                            File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(doubleTopObj) + ",\n");
 
                                             return i;
                                         }
@@ -509,7 +531,75 @@ namespace DotNetFramework_Algorithm_Chart_Start
             return -1;
         }
 
-
+        public int DoubleBottom_IntervalFormCheck(string symbol)
+        {
+            decimal thisTime;
+            decimal nextTime;
+            decimal firstBottom;
+            decimal secondBottom;
+            decimal middleTop;
+            decimal pointSix; // refer to the pattern_image_identifiers folder and the double_bottom image to understand where this (and other numeric) point is on the pattern
+            for (int i = 1; i < 15; i++)
+            {
+                for (int j = historic_data.Count - 1; j > (i * 6); j--)
+                {
+                    thisTime = historic_data.ElementAt(j).Close;
+                    nextTime = historic_data.ElementAt(j - i).Close;
+                    if (thisTime > nextTime) // thistime is point 7
+                    {
+                        thisTime = nextTime;
+                        nextTime = historic_data.ElementAt(j - (i * 2)).Close;
+                        if (thisTime > nextTime) // thistime is point 6
+                        {
+                            pointSix = thisTime;
+                            thisTime = nextTime;
+                            nextTime = historic_data.ElementAt(j - (i * 3)).Close;
+                            if (thisTime < nextTime) // thistime is point 5
+                            {
+                                secondBottom = thisTime;
+                                thisTime = nextTime;
+                                nextTime = historic_data.ElementAt(j - (i * 4)).Close;
+                                if (thisTime > nextTime) // thistime is point 4
+                                {
+                                    middleTop = thisTime;
+                                    thisTime = nextTime;
+                                    nextTime = historic_data.ElementAt(j - (i * 5)).Close;
+                                    if (thisTime < nextTime) // thistime is point 3
+                                    {
+                                        firstBottom = thisTime;
+                                        thisTime = nextTime;
+                                        nextTime = historic_data.ElementAt(j - (i * 6)).Close;
+                                        if (thisTime < nextTime && (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.01) && 
+                                            (Math.Max(thisTime, middleTop) / Math.Min(thisTime, middleTop)) < Convert.ToDecimal(1.01) && 
+                                            (Math.Max(middleTop, pointSix) / Math.Min(middleTop, pointSix)) < Convert.ToDecimal(1.01))
+                                        {
+                                            // pattern found
+                                            Console.WriteLine("Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                            File.AppendAllText(outputTxtFile, "Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
+                                            string jsonImagePath = genChartReversed(patterns.doubleBottom, symbol, j, i);
+                                            stockObj doubleBottomObj = new stockObj()
+                                            {
+                                                id = idCount,
+                                                symbol = symbol,
+                                                startdate = historic_data.ElementAt(j - (i * 6)).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j - (i * 6)).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j - (i * 6)).DateTime.Year.ToString(),
+                                                enddate = historic_data.ElementAt(j).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j).DateTime.Year.ToString(),
+                                                interval = i,
+                                                name = companyName,
+                                                image = jsonImagePath
+                                            };
+                                            idCount++;
+                                            File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(doubleBottomObj) + ",\n");
+                                            return i;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
 
         public string genChartReversed(patterns pattern, string symbol, int endIndex, int interval)
         {
@@ -532,6 +622,11 @@ namespace DotNetFramework_Algorithm_Chart_Start
             {
                 imagePath = Directory.GetCurrentDirectory() + "../../../images/doubleTop/" + symbol + ".png";
                 jsonImagePath = "/images/doubleTop/" + symbol + ".png";
+            }
+            else if (pattern == patterns.doubleBottom)
+            {
+                imagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom/" + symbol + ".png";
+                jsonImagePath = "/images/doubleBottom/" + symbol + ".png";
             }
 
             // create a new chart object
