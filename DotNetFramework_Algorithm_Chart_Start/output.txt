@@ -1,13 +1,10 @@
-IHS Pattern found for symbol: PLTR on: 1/29/2021 12:00:00 AM with interval: 6 days
-IHS Pattern found for symbol: NEPT on: 11/17/2020 12:00:00 AM with interval: 3 days
 IHS Pattern found for symbol: SNDL on: 1/4/2021 12:00:00 AM with interval: 1 days
 IHS Pattern found for symbol: FSKR on: 1/19/2021 12:00:00 AM with interval: 1 days
 IHS Pattern found for symbol: HYLN on: 1/27/2021 12:00:00 AM with interval: 2 days
 IHS Pattern found for symbol: SPLP on: 12/7/2020 12:00:00 AM with interval: 1 days
-IHS Pattern found for symbol: LAZR on: 1/13/2021 12:00:00 AM with interval: 2 days
 IHS Pattern found for symbol: CRSR on: 2/12/2021 12:00:00 AM with interval: 9 days
 IHS Pattern found for symbol: CNI on: 12/17/2020 12:00:00 AM with interval: 1 days
-HS Pattern found for symbol: TLRY on: 10/15/2020 12:00:00 AM with interval: 1 days
+HS Pattern found for symbol: TLRY on: 3/18/2021 12:00:00 AM with interval: 1 days
 HS Pattern found for symbol: UAVS on: 10/20/2020 12:00:00 AM with interval: 1 days
 HS Pattern found for symbol: NEPT on: 11/20/2020 12:00:00 AM with interval: 3 days
 HS Pattern found for symbol: FSKR on: 1/20/2021 12:00:00 AM with interval: 1 days
@@ -17,5 +14,4 @@ HS Pattern found for symbol: WNW on: 2/23/2021 12:00:00 AM with interval: 2 days
 HS Pattern found for symbol: LAZR on: 11/13/2020 12:00:00 AM with interval: 2 days
 HS Pattern found for symbol: CRSR on: 1/20/2021 12:00:00 AM with interval: 7 days
 HS Pattern found for symbol: CNI on: 12/14/2020 12:00:00 AM with interval: 1 days
-Double Bottom Pattern found for symbol: FSKR on: 9/24/2020 12:00:00 AM with interval: 1 days
 Double Bottom Pattern found for symbol: SPLP on: 12/16/2020 12:00:00 AM with interval: 1 days

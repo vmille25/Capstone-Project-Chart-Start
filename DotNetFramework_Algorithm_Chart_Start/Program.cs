@@ -286,7 +286,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
                                             // the following if statement ensures that the left and right shoulders are within 3% of one another and
                                             // the head is the minimum price for the timespan being evaluated
-                                            if ((Math.Max(leftshoulder, rightshoulder) / Math.Min(leftshoulder, rightshoulder)) < Convert.ToDecimal(1.03) && head < Math.Min(leftshoulder, rightshoulder))
+                                            if ((Math.Max(leftshoulder, rightshoulder) / Math.Min(leftshoulder, rightshoulder)) < Convert.ToDecimal(1.01) && head < Math.Min(leftshoulder, rightshoulder))
                                             {
                                                 // at this point we know we have found an ihs pattern 
                                                 Console.WriteLine("IHS Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
