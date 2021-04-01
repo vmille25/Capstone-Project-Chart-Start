@@ -8,19 +8,12 @@
 		{"id":6,"symbol":"CNI","startdate":"12/9/2020","enddate":"12/17/2020","interval":1,"name":"Canadian National Railway Company","image":"/images/ihs/CNI.png"}
 	],
 	"hs":[
-		{"id":7,"symbol":"TLRY","startdate":"3/10/2021","enddate":"3/18/2021","interval":1,"name":"Tilray, Inc.","image":"/images/hs/TLRY.png"},
-		{"id":8,"symbol":"UAVS","startdate":"10/12/2020","enddate":"10/20/2020","interval":1,"name":"AgEagle Aerial Systems, Inc.","image":"/images/hs/UAVS.png"},
-		{"id":9,"symbol":"NEPT","startdate":"10/27/2020","enddate":"11/20/2020","interval":3,"name":"Neptune Wellness Solutions Inc.","image":"/images/hs/NEPT.png"},
-		{"id":10,"symbol":"FSKR","startdate":"1/11/2021","enddate":"1/20/2021","interval":1,"name":"FS KKR Capital Corp. II","image":"/images/hs/FSKR.png"},
-		{"id":11,"symbol":"HYLN","startdate":"1/19/2021","enddate":"2/4/2021","interval":2,"name":"Hyliion Holdings Corp.","image":"/images/hs/HYLN.png"},
-		{"id":12,"symbol":"SPLP","startdate":"1/14/2021","enddate":"2/19/2021","interval":4,"name":"Steel Partners Holdings L.P.","image":"/images/hs/SPLP.png"},
-		{"id":13,"symbol":"WNW","startdate":"2/4/2021","enddate":"2/23/2021","interval":2,"name":"Wunong Net Technology Company Limited","image":"/images/hs/WNW.png"},
-		{"id":14,"symbol":"LAZR","startdate":"10/28/2020","enddate":"11/13/2020","interval":2,"name":"Luminar Technologies, Inc.","image":"/images/hs/LAZR.png"},
-		{"id":15,"symbol":"CRSR","startdate":"11/17/2020","enddate":"1/20/2021","interval":7,"name":"Corsair Gaming, Inc.","image":"/images/hs/CRSR.png"},
-		{"id":16,"symbol":"CNI","startdate":"12/4/2020","enddate":"12/14/2020","interval":1,"name":"Canadian National Railway Company","image":"/images/hs/CNI.png"}
+		{"id":7,"symbol":"FSKR","startdate":"1/11/2021","enddate":"1/20/2021","interval":1,"name":"FS KKR Capital Corp. II","image":"/images/hs/FSKR.png"},
+		{"id":8,"symbol":"LAZR","startdate":"10/28/2020","enddate":"11/13/2020","interval":2,"name":"Luminar Technologies, Inc.","image":"/images/hs/LAZR.png"},
+		{"id":9,"symbol":"CNI","startdate":"12/4/2020","enddate":"12/31/2020","interval":3,"name":"Canadian National Railway Company","image":"/images/hs/CNI.png"}
 	],
 	"doubleTop":[
-		{"id":17,"symbol":"SPLP","startdate":"12/8/2020","enddate":"12/16/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/doubleTop/SPLP.png"}
+		{"id":10,"symbol":"SPLP","startdate":"12/8/2020","enddate":"12/16/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/doubleTop/SPLP.png"}
 	]
 
 }
