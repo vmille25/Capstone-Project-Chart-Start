@@ -54,6 +54,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             string bullishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bullishRectangle/";
 
+            string bearishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bearishRectangle/";
+
             // if any images from previous runs is in the directory associated with a pattern, it is deleted
             // else create the directory as we will need it to hold our chart images
 
@@ -70,6 +72,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             clearImageDir(tripleBottomImagePath);
 
             clearImageDir(bullishRectangleImagePath);
+
+            clearImageDir(bearishRectangleImagePath);
 
             // declare a stock data object to hold all the stock data for one ticker
             stockDataObj stock_dataobj = new stockDataObj()
@@ -116,6 +120,12 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             searchForPattern(patterns.bullishRectangle, tickers, stock_dataobj, startDate, endDate);
              
+            fixJSONdoc(JSONfilename);
+
+            File.AppendAllText(JSONfilename, "\t],\n");
+
+            searchForPattern(patterns.bearishRectangle, tickers, stock_dataobj, startDate, endDate);
+
             fixJSONdoc(JSONfilename);
 
             File.AppendAllText(JSONfilename, "\t]\n");
@@ -196,7 +206,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
         doubleBottom,
         tripleTop,
         tripleBottom,
-        bullishRectangle
+        bullishRectangle,
+        bearishRectangle
     }
 
     class stockDataObj
@@ -213,6 +224,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
         public bool writtentripleTop = false;
         public bool writtentripleBottom = false;
         public bool writtenbullishRectangle = false;
+        public bool writtenbearishRectangle = false;
 
         // getStockData accepts the ticker symbol, the startDate (6 months ago from today) and the endDate (today)
         // this is an asynchronous function meaning the code does not necessarily run sequentially
@@ -313,6 +325,17 @@ namespace DotNetFramework_Algorithm_Chart_Start
                     }
 
                     BullishRectangle_IntervalFormCheck(symbol);
+                }
+
+                if (pattern == patterns.bearishRectangle)
+                {
+                    if (!writtenbearishRectangle)
+                    {
+                        File.AppendAllText(JSONfilename, "\t\"bearishRectangle\":[\n");
+                        writtenbearishRectangle = true;
+                    }
+
+                    BearishRectangle_IntervalFormCheck(symbol);
                 }
             }
             catch
@@ -932,6 +955,93 @@ namespace DotNetFramework_Algorithm_Chart_Start
             return -1;
         }
 
+        public int BearishRectangle_IntervalFormCheck(string symbol)
+        {
+            decimal thisTime;
+            decimal nextTime;
+            decimal firstTop;
+            decimal secondTop;
+            decimal thirdTop;
+            decimal secondBottom;
+            decimal thirdBottom;
+            decimal pointEight;
+            for (int i = 1; i < 15; i++)
+            {
+                for (int j = historic_data.Count - 1; j > (i * 8); j--)
+                {
+                    thisTime = historic_data.ElementAt(j).Close;
+                    nextTime = historic_data.ElementAt(j - i).Close;
+                    if (thisTime < nextTime) // thistime is point 9
+                    {
+                        thisTime = nextTime;
+                        nextTime = historic_data.ElementAt(j - (i * 2)).Close;
+                        if (thisTime < nextTime) //thistime is point 8
+                        {
+                            pointEight = thisTime;
+                            thisTime = nextTime;
+                            nextTime = historic_data.ElementAt(j - (i * 3)).Close;
+                            if (thisTime > nextTime) // thistime is point 7
+                            {
+                                thirdTop = thisTime;
+                                thisTime = nextTime;
+                                nextTime = historic_data.ElementAt(j - (i * 4)).Close;
+                                if (thisTime < nextTime) //thistime is point 6
+                                {
+                                    thirdBottom = thisTime;
+                                    thisTime = nextTime;
+                                    nextTime = historic_data.ElementAt(j - (i * 5)).Close;
+                                    if (thisTime > nextTime) // thistime is point 5
+                                    {
+                                        secondTop = thisTime;
+                                        thisTime = nextTime;
+                                        nextTime = historic_data.ElementAt(j - (i * 6)).Close;
+                                        if (thisTime < nextTime) // thistime is point 4
+                                        {
+                                            secondBottom = thisTime;
+                                            thisTime = nextTime;
+                                            nextTime = historic_data.ElementAt(j - (i * 7)).Close;
+                                            if (thisTime > nextTime) // thistime is point 3
+                                            {
+                                                firstTop = thisTime;
+                                                thisTime = nextTime;
+                                                nextTime = historic_data.ElementAt(j - (i * 8)).Close;
+                                                if (thisTime < nextTime && (Math.Max(thisTime, secondBottom) / Math.Min(thisTime, secondBottom)) < Convert.ToDecimal(1.02) && 
+                                                   (Math.Max(secondBottom, thirdBottom) / Math.Min(secondBottom, thirdBottom)) < Convert.ToDecimal(1.02) &&
+                                                   (Math.Max(thirdBottom, pointEight) / Math.Min(thirdBottom, pointEight)) < Convert.ToDecimal(1.02) &&
+                                                   (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) && 
+                                                   (Math.Max(secondTop, thirdTop) / Math.Min(secondTop, thirdTop)) < Convert.ToDecimal(1.02))
+                                                {
+                                                    // pattern found
+                                                    Console.WriteLine("Bearish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    File.AppendAllText(outputTxtFile, "Bearish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    string jsonImagePath = genChartReversed(patterns.bearishRectangle, symbol, j, i, 8);
+                                                    stockObj bearishRectangle = new stockObj()
+                                                    {
+                                                        id = idCount,
+                                                        symbol = symbol,
+                                                        startdate = historic_data.ElementAt(j - (i * 8)).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Year.ToString(),
+                                                        enddate = historic_data.ElementAt(j).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j).DateTime.Year.ToString(),
+                                                        interval = i,
+                                                        name = companyName,
+                                                        image = jsonImagePath
+                                                    };
+
+                                                    idCount++;
+                                                    File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(bearishRectangle) + ",\n");
+                                                    return i;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+
         public string genChartReversed(patterns pattern, string symbol, int endIndex, int interval, int amountOfPoints)
         {
             // initalize some file path strings...
@@ -973,6 +1083,11 @@ namespace DotNetFramework_Algorithm_Chart_Start
             {
                 imagePath = Directory.GetCurrentDirectory() + "../../../images/bullishRectangle/" + symbol + ".png";
                 jsonImagePath = "/images/bullishRectangle/" + symbol + ".png";
+            }
+            else if (pattern == patterns.bearishRectangle)
+            {
+                imagePath = Directory.GetCurrentDirectory() + "../../../images/bearishRectangle/" + symbol + ".png";
+                jsonImagePath = "/images/bearishRectangle/" + symbol + ".png";
             }
             // create a new chart object
             Chart chart = new Chart();
