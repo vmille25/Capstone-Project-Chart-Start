@@ -31,6 +31,9 @@
 		{"id":17,"symbol":"SPLP","startdate":"11/25/2020","enddate":"12/8/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/bullishRectangle/SPLP.png"},
 		{"id":18,"symbol":"LAZR","startdate":"10/28/2020","enddate":"11/19/2020","interval":2,"name":"Luminar Technologies, Inc.","image":"/images/bullishRectangle/LAZR.png"},
 		{"id":19,"symbol":"CNI","startdate":"11/2/2020","enddate":"1/12/2021","interval":6,"name":"Canadian National Railway Company","image":"/images/bullishRectangle/CNI.png"}
+	],
+	"bearishRectangle":[
+		{"id":20,"symbol":"CNI","startdate":"12/9/2020","enddate":"12/21/2020","interval":1,"name":"Canadian National Railway Company","image":"/images/bearishRectangle/CNI.png"}
 	]
 
 }
