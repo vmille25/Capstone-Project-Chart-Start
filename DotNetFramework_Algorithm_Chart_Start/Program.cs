@@ -50,6 +50,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             string tripleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop";
 
+            string tripleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleBottom";
+
             // if any images from previous runs is in the directory associated with a pattern, it is deleted
             // else create the directory as we will need it to hold our chart images
 
@@ -62,6 +64,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             clearImageDir(doubleBottomImagePath);
 
             clearImageDir(tripleTopImagePath);
+
+            clearImageDir(tripleBottomImagePath);
 
             // declare a stock data object to hold all the stock data for one ticker
             stockDataObj stock_dataobj = new stockDataObj()
@@ -95,6 +99,12 @@ namespace DotNetFramework_Algorithm_Chart_Start
             File.AppendAllText(JSONfilename, "\t],\n");
 
             searchForPattern(patterns.tripleTop, tickers, stock_dataobj, startDate, endDate);
+
+            fixJSONdoc(JSONfilename);
+
+            File.AppendAllText(JSONfilename, "\t],\n");
+
+            searchForPattern(patterns.tripleBottom, tickers, stock_dataobj, startDate, endDate);
 
             fixJSONdoc(JSONfilename);
 
@@ -174,7 +184,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
         hs,
         doubleTop,
         doubleBottom,
-        tripleTop
+        tripleTop,
+        tripleBottom
     }
 
     class stockDataObj
@@ -189,6 +200,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
         public bool writtendoubleTop = false;
         public bool writtendoubleBottom = false;
         public bool writtentripleTop = false;
+        public bool writtentripleBottom = false;
 
         // getStockData accepts the ticker symbol, the startDate (6 months ago from today) and the endDate (today)
         // this is an asynchronous function meaning the code does not necessarily run sequentially
@@ -269,6 +281,16 @@ namespace DotNetFramework_Algorithm_Chart_Start
                     TripleTop_IntervalFormCheck(symbol);
                 }
 
+                if (pattern == patterns.tripleBottom)
+                {
+                    if (!writtentripleBottom)
+                    {
+                        File.AppendAllText(JSONfilename, "\t\"tripleBottom\":[\n");
+                        writtentripleBottom = true;
+                    }
+
+                    TripleBottom_IntervalFormCheck(symbol);
+                }
             }
             catch
             {
@@ -710,8 +732,92 @@ namespace DotNetFramework_Algorithm_Chart_Start
                     }
                 }
             }
+            return -1;
+        }
 
+        public int TripleBottom_IntervalFormCheck(string symbol)
+        {
+            decimal thisTime;
+            decimal nextTime;
+            decimal firstBottom;
+            decimal secondBottom;
+            decimal thirdBottom;
+            decimal firstTop;
+            decimal secondTop;
+            decimal pointEight;
+            for (int i = 1; i < 15; i++)
+            {
+                for (int j = historic_data.Count - 1; j > (i * 8); j--)
+                {
+                    thisTime = historic_data.ElementAt(j).Close;
+                    nextTime = historic_data.ElementAt(j - i).Close;
+                    if (thisTime > nextTime) //thistime is point 9
+                    {
+                        thisTime = nextTime;
+                        nextTime = historic_data.ElementAt(j - (i * 2)).Close;
+                        if(thisTime > nextTime) // thistime is point 8
+                        {
+                            pointEight = thisTime;
+                            thisTime = nextTime;
+                            nextTime = historic_data.ElementAt(j - (i * 3)).Close;
+                            if (thisTime < nextTime) // thistime is point 7
+                            {
+                                thirdBottom = thisTime;
+                                thisTime = nextTime;
+                                nextTime = historic_data.ElementAt(j - (i * 4)).Close;
+                                if (thisTime > nextTime) //thistime is point 6
+                                {
+                                    secondTop = thisTime;
+                                    thisTime = nextTime;
+                                    nextTime = historic_data.ElementAt(j - (i * 5)).Close;
+                                    if (thisTime < nextTime) //thistime is point 5
+                                    {
+                                        secondBottom = thisTime;
+                                        thisTime = nextTime;
+                                        nextTime = historic_data.ElementAt(j - (i * 6)).Close;
+                                        if (thisTime > nextTime) // thistime is point 4
+                                        {
+                                            firstTop = thisTime;
+                                            thisTime = nextTime;
+                                            nextTime = historic_data.ElementAt(j - (i * 7)).Close;
+                                            if (thisTime < nextTime) // thistime is point 3
+                                            {
+                                                firstBottom = thisTime;
+                                                thisTime = nextTime;
+                                                nextTime = historic_data.ElementAt(j - (i * 8)).Close;
+                                                if (thisTime < nextTime && (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.02) &&
+                                                    (Math.Max(secondBottom, thirdBottom) / Math.Min(secondBottom, thirdBottom)) < Convert.ToDecimal(1.02) &&
+                                                    (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) && 
+                                                    (Math.Max(secondTop, pointEight) / Math.Min(secondTop, pointEight)) < Convert.ToDecimal(1.02))
+                                                {
+                                                    //pattern found
+                                                    Console.WriteLine("Triple Bottom pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    File.AppendAllText(outputTxtFile, "Triple Bottom pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
+                                                    string jsonImagePath = genChartReversed(patterns.tripleBottom, symbol, j, i, 8);
+                                                    stockObj tripleBottomObj = new stockObj()
+                                                    {
+                                                        id = idCount,
+                                                        symbol = symbol,
+                                                        startdate = historic_data.ElementAt(j - (i * 8)).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Year.ToString(),
+                                                        enddate = historic_data.ElementAt(j).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j).DateTime.Year.ToString(),
+                                                        interval = i,
+                                                        name = companyName,
+                                                        image = jsonImagePath
+                                                    };
 
+                                                    idCount++;
+                                                    File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(tripleBottomObj) + ",\n");
+                                                    return i;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return -1;
         }
 
@@ -746,6 +852,11 @@ namespace DotNetFramework_Algorithm_Chart_Start
             {
                 imagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop/" + symbol + ".png";
                 jsonImagePath = "/images/tripleTop/" + symbol + ".png";
+            }
+            else if (pattern == patterns.tripleBottom)
+            {
+                imagePath = Directory.GetCurrentDirectory() + "../../../images/tripleBottom/" + symbol + ".png";
+                jsonImagePath = "/images/tripleBottom/" + symbol + ".png";
             }
 
             // create a new chart object
