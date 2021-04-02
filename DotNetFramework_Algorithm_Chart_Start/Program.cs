@@ -48,6 +48,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             string doubleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom";
 
+            string tripleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop";
+
             // if any images from previous runs is in the directory associated with a pattern, it is deleted
             // else create the directory as we will need it to hold our chart images
 
@@ -58,6 +60,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             clearImageDir(doubleTopImagePath);
 
             clearImageDir(doubleBottomImagePath);
+
+            clearImageDir(tripleTopImagePath);
 
             // declare a stock data object to hold all the stock data for one ticker
             stockDataObj stock_dataobj = new stockDataObj()
@@ -87,7 +91,15 @@ namespace DotNetFramework_Algorithm_Chart_Start
             searchForPattern(patterns.doubleBottom, tickers, stock_dataobj, startDate, endDate);
 
             fixJSONdoc(JSONfilename);
+
+            File.AppendAllText(JSONfilename, "\t],\n");
+
+            searchForPattern(patterns.tripleTop, tickers, stock_dataobj, startDate, endDate);
+
+            fixJSONdoc(JSONfilename);
+
             File.AppendAllText(JSONfilename, "\t]\n");
+
 
             // finish up the json file 
             File.AppendAllText(JSONfilename, "\n}");
@@ -161,7 +173,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
         ihs,
         hs,
         doubleTop,
-        doubleBottom
+        doubleBottom,
+        tripleTop
     }
 
     class stockDataObj
@@ -175,6 +188,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
         public bool writtenHS = false;
         public bool writtendoubleTop = false;
         public bool writtendoubleBottom = false;
+        public bool writtentripleTop = false;
 
         // getStockData accepts the ticker symbol, the startDate (6 months ago from today) and the endDate (today)
         // this is an asynchronous function meaning the code does not necessarily run sequentially
@@ -242,6 +256,17 @@ namespace DotNetFramework_Algorithm_Chart_Start
                     }
 
                     DoubleBottom_IntervalFormCheck(symbol);
+                }
+
+                if (pattern == patterns.tripleTop)
+                {
+                    if (!writtentripleTop)
+                    {
+                        File.AppendAllText(JSONfilename, "\t\"tripleTop\":[\n");
+                        writtentripleTop = true;
+                    }
+
+                    TripleTop_IntervalFormCheck(symbol);
                 }
 
             }
@@ -319,7 +344,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                 // the ticker symbol, j which is the most recent element index of the historic data,
                                                 // and the interval the pattern was found for i.
                                                 // the chart generation function returns the reference string for the chartdata.json file
-                                                string jsonImagePath = genChartReversed(patterns.ihs, symbol, j, i);
+                                                string jsonImagePath = genChartReversed(patterns.ihs, symbol, j, i, 6);
 
                                                 // stockObj objects hold the specific information for the stock symbol
                                                 // we only need this when a pattern is found, that is why it is located here
@@ -416,7 +441,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                 // the ticker symbol, j which is the most recent element index of the historic data,
                                                 // and the interval the pattern was found for i.
                                                 // the chart generation function returns the reference string for the chartdata.json file
-                                                string jsonImagePath = genChartReversed(patterns.hs, symbol, j, i);
+                                                string jsonImagePath = genChartReversed(patterns.hs, symbol, j, i, 6);
 
                                                 // stockObj objects hold the specific information for the stock symbol
                                                 // we only need this when a pattern is found, that is why it is located here
@@ -501,7 +526,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                             Console.WriteLine("Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                             File.AppendAllText(outputTxtFile, "Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
 
-                                            string jsonImagePath = genChartReversed(patterns.doubleTop, symbol, j, i);
+                                            string jsonImagePath = genChartReversed(patterns.doubleTop, symbol, j, i, 6);
 
                                             stockObj doubleTopObj = new stockObj()
                                             {
@@ -576,7 +601,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                             // pattern found
                                             Console.WriteLine("Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                             File.AppendAllText(outputTxtFile, "Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
-                                            string jsonImagePath = genChartReversed(patterns.doubleBottom, symbol, j, i);
+                                            string jsonImagePath = genChartReversed(patterns.doubleBottom, symbol, j, i, 6);
                                             stockObj doubleBottomObj = new stockObj()
                                             {
                                                 id = idCount,
@@ -601,7 +626,96 @@ namespace DotNetFramework_Algorithm_Chart_Start
             return -1;
         }
 
-        public string genChartReversed(patterns pattern, string symbol, int endIndex, int interval)
+        public int TripleTop_IntervalFormCheck(string symbol)
+        {
+            decimal thisTime;
+            decimal nextTime;
+            decimal firstTop;
+            decimal secondTop;
+            decimal thirdTop;
+            decimal firstBottom;
+            decimal secondBottom;
+            decimal pointEight;
+            for (int i = 1; i < 15; i++)
+            {
+                for (int j = historic_data.Count - 1; j > (i * 8); j--)
+                {
+                    thisTime = historic_data.ElementAt(j).Close;
+                    nextTime = historic_data.ElementAt(j - i).Close;
+                    if (thisTime < nextTime) // thistime is point 9
+                    {
+                        thisTime = nextTime;
+                        nextTime = historic_data.ElementAt(j - (i * 2)).Close;
+                        if (thisTime < nextTime) // thisttime is point 8
+                        {
+                            pointEight = thisTime;
+                            thisTime = nextTime;
+                            nextTime = historic_data.ElementAt(j - (i * 3)).Close;
+                            if (thisTime > nextTime) // thistime is point 7
+                            {
+                                thirdTop = thisTime;
+                                thisTime = nextTime;
+                                nextTime = historic_data.ElementAt(j - (i * 4)).Close;
+                                if (thisTime <  nextTime) //thistime is point 6
+                                {
+                                    secondBottom = thisTime;
+                                    thisTime = nextTime;
+                                    nextTime = historic_data.ElementAt(j - (i * 5)).Close;
+                                    if (thisTime > nextTime) //thistime is point 5
+                                    {
+                                        secondTop = thisTime;
+                                        thisTime = nextTime;
+                                        nextTime = historic_data.ElementAt(j - (i * 6)).Close;
+                                        if (thisTime < nextTime) //thistime is point 4
+                                        {
+                                            firstBottom = thisTime;
+                                            thisTime = nextTime;
+                                            nextTime = historic_data.ElementAt(j - (i * 7)).Close;
+                                            if (thisTime > nextTime) //thisttime is point 3 
+                                            {
+                                                firstTop = thisTime;
+                                                thisTime = nextTime;
+                                                nextTime = historic_data.ElementAt(j - (i * 8)).Close;
+                                                if (thisTime > nextTime && (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) && 
+                                                    (Math.Max(secondTop, thirdTop) / Math.Min(secondTop, thirdTop)) < Convert.ToDecimal(1.02) &&
+                                                    (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.02) && 
+                                                    (Math.Max(secondBottom, pointEight) / Math.Min(secondBottom, pointEight)) < Convert.ToDecimal(1.02))
+                                                {
+                                                    // pattern found
+                                                    Console.WriteLine("Triple Top pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    File.AppendAllText(outputTxtFile, "Triple Top pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
+                                                    string jsonImagePath = genChartReversed(patterns.tripleTop, symbol, j, i, 8);
+                                                    stockObj tripleTopObj = new stockObj()
+                                                    {
+                                                        id = idCount,
+                                                        symbol = symbol,
+                                                        startdate = historic_data.ElementAt(j - (i * 8)).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j - (i * 8)).DateTime.Year.ToString(),
+                                                        enddate = historic_data.ElementAt(j).DateTime.Month.ToString() + "/" + historic_data.ElementAt(j).DateTime.Day.ToString() + "/" + historic_data.ElementAt(j).DateTime.Year.ToString(),
+                                                        interval = i,
+                                                        name = companyName,
+                                                        image = jsonImagePath
+                                                    };
+
+                                                    idCount++;
+                                                    File.AppendAllText(JSONfilename, "\t\t" + JsonConvert.SerializeObject(tripleTopObj) + ",\n");
+                                                    return i;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                    }
+                }
+            }
+
+
+            return -1;
+        }
+
+        public string genChartReversed(patterns pattern, string symbol, int endIndex, int interval, int amountOfPoints)
         {
             // initalize some file path strings...
             string imagePath = "null";
@@ -628,6 +742,11 @@ namespace DotNetFramework_Algorithm_Chart_Start
                 imagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom/" + symbol + ".png";
                 jsonImagePath = "/images/doubleBottom/" + symbol + ".png";
             }
+            else if (pattern == patterns.tripleTop)
+            {
+                imagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop/" + symbol + ".png";
+                jsonImagePath = "/images/tripleTop/" + symbol + ".png";
+            }
 
             // create a new chart object
             Chart chart = new Chart();
@@ -646,7 +765,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             // add the prices to the chart and the chartpricelist, this can be done in any order but this is
             // done in the order of the furthest in the past point to the most recent point for simplicity
-            for(int i = 6; i >= 0; i--)
+            for(int i = amountOfPoints; i >= 0; i--)
             {
                 S1.Points.AddXY(historic_data.ElementAt(endIndex - (interval * i)).DateTime.Date, historic_data.ElementAt(endIndex - (interval * i)).Close);
                 chartPriceList.Add(historic_data.ElementAt(endIndex - (interval * i)).Close);

@@ -10,3 +10,5 @@ HS Pattern found for symbol: CNI on: 12/31/2020 12:00:00 AM with interval: 3 day
 Double Top Pattern found for symbol: SPLP on: 12/16/2020 12:00:00 AM with interval: 1 days
 Double Bottom Pattern found for symbol: LAZR on: 11/25/2020 12:00:00 AM with interval: 5 days
 Double Bottom Pattern found for symbol: CNI on: 2/24/2021 12:00:00 AM with interval: 1 days
+Triple Top pattern found for symbol: SPLP on: 3/1/2021 12:00:00 AM with interval: 4 days
+Triple Top pattern found for symbol: LAZR on: 10/20/2020 12:00:00 AM with interval: 1 days
