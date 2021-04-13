@@ -42,38 +42,34 @@ namespace DotNetFramework_Algorithm_Chart_Start
 
             string ihsImagePath = Directory.GetCurrentDirectory() + "../../../images/ihs/"; // declares the path for ihs image storage
 
-            string hsImagePath = Directory.GetCurrentDirectory() + "../../../images/hs/";
+            string hsImagePath = Directory.GetCurrentDirectory() + "../../../images/hs/"; // path for hs image storage
+            
+            string doubleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleTop/"; // path for doubletop image storage
+            
+            string doubleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom/"; // path for double bottom image storage
+            
+            string tripleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop/"; // path for triple top image storage
 
-            string doubleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleTop/";
+            string tripleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleBottom/"; // path for triple bottom image storage
 
-            string doubleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/doubleBottom/";
+            string bullishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bullishRectangle/"; // path for bullish rectangle image storage
 
-            string tripleTopImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleTop/";
+            string bearishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bearishRectangle/"; // path for bearish rectangle image storage
 
-            string tripleBottomImagePath = Directory.GetCurrentDirectory() + "../../../images/tripleBottom/";
-
-            string bullishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bullishRectangle/";
-
-            string bearishRectangleImagePath = Directory.GetCurrentDirectory() + "../../../images/bearishRectangle/";
+            // imagepathslist holds all the image paths for the various patterns
+            List<string> imagePathsList = new List<string>();
+            imagePathsList.Add(ihsImagePath); imagePathsList.Add(hsImagePath);
+            imagePathsList.Add(doubleTopImagePath); imagePathsList.Add(doubleBottomImagePath);
+            imagePathsList.Add(tripleTopImagePath); imagePathsList.Add(tripleBottomImagePath);
+            imagePathsList.Add(bullishRectangleImagePath); imagePathsList.Add(bearishRectangleImagePath);
 
             // if any images from previous runs is in the directory associated with a pattern, it is deleted
             // else create the directory as we will need it to hold our chart images
-
-            clearImageDir(ihsImagePath);
-
-            clearImageDir(hsImagePath);
-
-            clearImageDir(doubleTopImagePath);
-
-            clearImageDir(doubleBottomImagePath);
-
-            clearImageDir(tripleTopImagePath);
-
-            clearImageDir(tripleBottomImagePath);
-
-            clearImageDir(bullishRectangleImagePath);
-
-            clearImageDir(bearishRectangleImagePath);
+            // this is what the clearImageDir() call does.
+            for (int i = 0; i < imagePathsList.Count; i++)
+            {
+                clearImageDir(imagePathsList[i]);
+            }
 
             // declare a stock data object to hold all the stock data for one ticker
             stockDataObj stock_dataobj = new stockDataObj()
@@ -82,54 +78,33 @@ namespace DotNetFramework_Algorithm_Chart_Start
                 JSONfilename = JSONfilename
             };
 
-            searchForPattern(patterns.ihs, tickers, stock_dataobj, startDate, endDate);
+            List<patterns> patternsList = new List<patterns>();
+            patternsList.Add(patterns.ihs); patternsList.Add(patterns.hs);
+            patternsList.Add(patterns.doubleTop); patternsList.Add(patterns.doubleBottom);
+            patternsList.Add(patterns.tripleTop); patternsList.Add(patterns.tripleBottom);
+            patternsList.Add(patterns.bullishRectangle);
 
-            fixJSONdoc(JSONfilename);
+            // searchForPattern will search the historical market data, trying to find a case 
+            // that exhibits the specified pattern 
+            for (int i = 0; i < patternsList.Count; i++)
+            {
+                searchForPattern(patternsList[i], tickers, stock_dataobj, startDate, endDate);
 
-            File.AppendAllText(JSONfilename, "\t],\n");
+                // the json document has a few syntactical errors after being printed to
+                // that is why the fixJsonDoc() call is made to correct these errors
+                fixJSONdoc(JSONfilename);
 
-            searchForPattern(patterns.hs, tickers, stock_dataobj, startDate, endDate);
+                // this is the final step in printing to the json doc for the specified pattern
+                File.AppendAllText(JSONfilename, "\t],\n");
+            }
 
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
-            searchForPattern(patterns.doubleTop, tickers, stock_dataobj, startDate, endDate);
-
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
-            searchForPattern(patterns.doubleBottom, tickers, stock_dataobj, startDate, endDate);
-
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
-            searchForPattern(patterns.tripleTop, tickers, stock_dataobj, startDate, endDate);
-
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
-            searchForPattern(patterns.tripleBottom, tickers, stock_dataobj, startDate, endDate);
-
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
-            searchForPattern(patterns.bullishRectangle, tickers, stock_dataobj, startDate, endDate);
-             
-            fixJSONdoc(JSONfilename);
-
-            File.AppendAllText(JSONfilename, "\t],\n");
-
+            // the final pattern is a little special because the json document cannot have a comma
+            // after the closing bracket ]
             searchForPattern(patterns.bearishRectangle, tickers, stock_dataobj, startDate, endDate);
 
             fixJSONdoc(JSONfilename);
 
             File.AppendAllText(JSONfilename, "\t]\n");
-
 
             // finish up the json file 
             File.AppendAllText(JSONfilename, "\n}");
@@ -139,6 +114,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             Console.ReadKey();
         }
 
+        // clearImageDir simply clears any contents of the folder
+        // passed as an argument
         public static void clearImageDir(string folderPath)
         {
             if (Directory.Exists(folderPath))
@@ -160,6 +137,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             }
         }
 
+        // searchForPattern looks at the historical market data of the passed tickers
+        // and analyzes the data for a specific pattern also passed as an argument
         public static void searchForPattern(patterns pattern, string[] tickers, stockDataObj stock_dataobj, DateTime startDate, DateTime endDate)
         {
             int i = 0;
@@ -179,6 +158,8 @@ namespace DotNetFramework_Algorithm_Chart_Start
             return;
         }
 
+        // fixJsonDoc takes care of a few syntactical errors
+        // produced by the newtonsoft Json api call. 
         public static void fixJSONdoc(string JSONfilename)
         {
             string[] jsonFileLines = File.ReadAllLines(JSONfilename);

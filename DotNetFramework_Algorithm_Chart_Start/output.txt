@@ -14,4 +14,8 @@ Triple Top pattern found for symbol: RIDE on: 4/12/2021 12:00:00 AM with interva
 Triple Top pattern found for symbol: SPLP on: 3/1/2021 12:00:00 AM with interval: 4 days
 Triple Top pattern found for symbol: LMND on: 4/12/2021 12:00:00 AM with interval: 1 days
 Triple Bottom pattern found for symbol: CNI on: 3/10/2021 12:00:00 AM with interval: 2 days
-Bullish Rectangle pattern found for symbol: FSKR on: 1/22/2021 12:00:00 AM with interval: 1 daysBullish Rectangle pattern found for symbol: SPLP on: 12/8/2020 12:00:00 AM with interval: 1 daysBullish Rectangle pattern found for symbol: LAZR on: 11/19/2020 12:00:00 AM with interval: 2 daysBullish Rectangle pattern found for symbol: CNI on: 1/12/2021 12:00:00 AM with interval: 6 daysBearish Rectangle pattern found for symbol: CNI on: 12/21/2020 12:00:00 AM with interval: 1 days
+Bullish Rectangle pattern found for symbol: FSKR on: 1/22/2021 12:00:00 AM with interval: 1 days
+Bullish Rectangle pattern found for symbol: SPLP on: 12/8/2020 12:00:00 AM with interval: 1 days
+Bullish Rectangle pattern found for symbol: LAZR on: 11/19/2020 12:00:00 AM with interval: 2 days
+Bullish Rectangle pattern found for symbol: CNI on: 1/12/2021 12:00:00 AM with interval: 6 days
+Bearish Rectangle pattern found for symbol: CNI on: 12/21/2020 12:00:00 AM with interval: 1 days
