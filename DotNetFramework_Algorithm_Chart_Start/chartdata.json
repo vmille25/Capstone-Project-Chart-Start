@@ -20,20 +20,21 @@
 		{"id":12,"symbol":"CNI","startdate":"2/16/2021","enddate":"2/24/2021","interval":1,"name":"Canadian National Railway Company","image":"/images/doubleBottom/CNI.png"}
 	],
 	"tripleTop":[
-		{"id":13,"symbol":"SPLP","startdate":"1/12/2021","enddate":"3/1/2021","interval":4,"name":"Steel Partners Holdings L.P.","image":"/images/tripleTop/SPLP.png"},
-		{"id":14,"symbol":"LAZR","startdate":"10/8/2020","enddate":"10/20/2020","interval":1,"name":"Luminar Technologies, Inc.","image":"/images/tripleTop/LAZR.png"}
+		{"id":13,"symbol":"RIDE","startdate":"3/30/2021","enddate":"4/12/2021","interval":1,"name":"Lordstown Motors Corp.","image":"/images/tripleTop/RIDE.png"},
+		{"id":14,"symbol":"SPLP","startdate":"1/12/2021","enddate":"3/1/2021","interval":4,"name":"Steel Partners Holdings L.P.","image":"/images/tripleTop/SPLP.png"},
+		{"id":15,"symbol":"LMND","startdate":"3/30/2021","enddate":"4/12/2021","interval":1,"name":"Lemonade, Inc.","image":"/images/tripleTop/LMND.png"}
 	],
 	"tripleBottom":[
-		{"id":15,"symbol":"CNI","startdate":"2/16/2021","enddate":"3/10/2021","interval":2,"name":"Canadian National Railway Company","image":"/images/tripleBottom/CNI.png"}
+		{"id":16,"symbol":"CNI","startdate":"2/16/2021","enddate":"3/10/2021","interval":2,"name":"Canadian National Railway Company","image":"/images/tripleBottom/CNI.png"}
 	],
 	"bullishRectangle":[
-		{"id":16,"symbol":"FSKR","startdate":"1/11/2021","enddate":"1/22/2021","interval":1,"name":"FS KKR Capital Corp. II","image":"/images/bullishRectangle/FSKR.png"},
-		{"id":17,"symbol":"SPLP","startdate":"11/25/2020","enddate":"12/8/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/bullishRectangle/SPLP.png"},
-		{"id":18,"symbol":"LAZR","startdate":"10/28/2020","enddate":"11/19/2020","interval":2,"name":"Luminar Technologies, Inc.","image":"/images/bullishRectangle/LAZR.png"},
-		{"id":19,"symbol":"CNI","startdate":"11/2/2020","enddate":"1/12/2021","interval":6,"name":"Canadian National Railway Company","image":"/images/bullishRectangle/CNI.png"}
+		{"id":17,"symbol":"FSKR","startdate":"1/11/2021","enddate":"1/22/2021","interval":1,"name":"FS KKR Capital Corp. II","image":"/images/bullishRectangle/FSKR.png"},
+		{"id":18,"symbol":"SPLP","startdate":"11/25/2020","enddate":"12/8/2020","interval":1,"name":"Steel Partners Holdings L.P.","image":"/images/bullishRectangle/SPLP.png"},
+		{"id":19,"symbol":"LAZR","startdate":"10/28/2020","enddate":"11/19/2020","interval":2,"name":"Luminar Technologies, Inc.","image":"/images/bullishRectangle/LAZR.png"},
+		{"id":20,"symbol":"CNI","startdate":"11/2/2020","enddate":"1/12/2021","interval":6,"name":"Canadian National Railway Company","image":"/images/bullishRectangle/CNI.png"}
 	],
 	"bearishRectangle":[
-		{"id":20,"symbol":"CNI","startdate":"12/9/2020","enddate":"12/21/2020","interval":1,"name":"Canadian National Railway Company","image":"/images/bearishRectangle/CNI.png"}
+		{"id":21,"symbol":"CNI","startdate":"12/9/2020","enddate":"12/21/2020","interval":1,"name":"Canadian National Railway Company","image":"/images/bearishRectangle/CNI.png"}
 	]
 
 }
