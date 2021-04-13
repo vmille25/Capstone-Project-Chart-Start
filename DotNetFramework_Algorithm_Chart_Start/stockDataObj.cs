@@ -369,30 +369,32 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime < nextTime) // thistime is point 6
                         {
-                            pointSix = thisTime;
+                            pointSix = thisTime; // set pointsix equal to thistime
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime > nextTime) //thistime is point 5
                             {
-                                secondTop = thisTime;
+                                secondTop = thisTime; // set secondtop equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime < nextTime) //thistime is point 4
                                 {
-                                    middleBottom = thisTime;
+                                    middleBottom = thisTime; // set middleBottom equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime > nextTime) // thistime is point 3
                                     {
-                                        firstTop = thisTime;
+                                        firstTop = thisTime; // set firstTop equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime > nextTime && (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.005) &&
                                             (Math.Max(thisTime, middleBottom) / Math.Min(thisTime, middleBottom)) < Convert.ToDecimal(1.005) &&
                                             (Math.Max(middleBottom, pointSix) / Math.Min(middleBottom, pointSix)) < Convert.ToDecimal(1.005)) // thistime is point 2
-                                        {
+                                        { // if the first and second tops are within half a percent of each other
+                                          // and thistime is within half a percent of middle bottom and
+                                          // middlebottom is within half a percent of pointSix then...
                                             //pattern found
-
+                                            // the rest of this is a repeat of the previous steps, just for the double top pattern specifically
                                             Console.WriteLine("Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                             File.AppendAllText(outputTxtFile, "Double Top Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
 
@@ -446,28 +448,31 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime > nextTime) // thistime is point 6
                         {
-                            pointSix = thisTime;
+                            pointSix = thisTime; // set thistime equal to pointsix
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime < nextTime) // thistime is point 5
                             {
-                                secondBottom = thisTime;
+                                secondBottom = thisTime; // set the second bottom equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime > nextTime) // thistime is point 4
                                 {
-                                    middleTop = thisTime;
+                                    middleTop = thisTime; // set the middle top equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime < nextTime) // thistime is point 3
                                     {
-                                        firstBottom = thisTime;
+                                        firstBottom = thisTime; // set the firstbottom equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime < nextTime && (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.01) &&
                                             (Math.Max(thisTime, middleTop) / Math.Min(thisTime, middleTop)) < Convert.ToDecimal(1.01) &&
                                             (Math.Max(middleTop, pointSix) / Math.Min(middleTop, pointSix)) < Convert.ToDecimal(1.01))
                                         {
+                                            // if the first bottom and second bottom are within one percent of one another and
+                                            // thistime and the middle top are within one percent and
+                                            // the middle top and the pointSix are within one percent then...
                                             // pattern found
                                             Console.WriteLine("Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                             File.AppendAllText(outputTxtFile, "Double Bottom Pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
@@ -518,32 +523,32 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime < nextTime) // thisttime is point 8
                         {
-                            pointEight = thisTime;
+                            pointEight = thisTime; // set point eight equal to thistime
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime > nextTime) // thistime is point 7
                             {
-                                thirdTop = thisTime;
+                                thirdTop = thisTime; // set the third top equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime < nextTime) //thistime is point 6
                                 {
-                                    secondBottom = thisTime;
+                                    secondBottom = thisTime; // set the second bottom equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime > nextTime) //thistime is point 5
                                     {
-                                        secondTop = thisTime;
+                                        secondTop = thisTime; // set the second top equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime < nextTime) //thistime is point 4
                                         {
-                                            firstBottom = thisTime;
+                                            firstBottom = thisTime; // set the first bottom equal to thistime
                                             thisTime = nextTime;
                                             nextTime = historic_data.ElementAt(j - (i * 7)).Close;
                                             if (thisTime > nextTime) //thisttime is point 3 
                                             {
-                                                firstTop = thisTime;
+                                                firstTop = thisTime; // set the first top equal to thistime
                                                 thisTime = nextTime;
                                                 nextTime = historic_data.ElementAt(j - (i * 8)).Close;
                                                 if (thisTime > nextTime && (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) &&
@@ -551,6 +556,10 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                     (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.02) &&
                                                     (Math.Max(secondBottom, pointEight) / Math.Min(secondBottom, pointEight)) < Convert.ToDecimal(1.02))
                                                 {
+                                                    // if the first top and second top are within 2 percent of one another and
+                                                    // the second top and third top are within 2 percent and
+                                                    // the first bottom and second bottom are within 2 percent and
+                                                    // the second bottom and the point eight are within 2 percent then...
                                                     // pattern found
                                                     Console.WriteLine("Triple Top pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                                     File.AppendAllText(outputTxtFile, "Triple Top pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
@@ -605,27 +614,27 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime > nextTime) // thistime is point 8
                         {
-                            pointEight = thisTime;
+                            pointEight = thisTime; // set point eight equal to thistime
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime < nextTime) // thistime is point 7
                             {
-                                thirdBottom = thisTime;
+                                thirdBottom = thisTime; // set third bottom equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime > nextTime) //thistime is point 6
                                 {
-                                    secondTop = thisTime;
+                                    secondTop = thisTime; // set second top equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime < nextTime) //thistime is point 5
                                     {
-                                        secondBottom = thisTime;
+                                        secondBottom = thisTime; // set second bottom equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime > nextTime) // thistime is point 4
                                         {
-                                            firstTop = thisTime;
+                                            firstTop = thisTime; // set the first top equal to thistime
                                             thisTime = nextTime;
                                             nextTime = historic_data.ElementAt(j - (i * 7)).Close;
                                             if (thisTime < nextTime) // thistime is point 3
@@ -638,6 +647,10 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                     (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) &&
                                                     (Math.Max(secondTop, pointEight) / Math.Min(secondTop, pointEight)) < Convert.ToDecimal(1.02))
                                                 {
+                                                    // if the first bottom and second bottom are within 2 percent of one another and
+                                                    // if the second bottom and third bottom are within 2 percent and
+                                                    // if the first top and the second top are within 2 percent and
+                                                    // if the second top and the point eight are within 2 percent then...
                                                     //pattern found
                                                     Console.WriteLine("Triple Bottom pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
                                                     File.AppendAllText(outputTxtFile, "Triple Bottom pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
@@ -692,32 +705,32 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime > nextTime) // thistime is point 8
                         {
-                            pointEight = thisTime;
+                            pointEight = thisTime; // set the point eight equal to thistime
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime < nextTime) // thistime is point 7
                             {
-                                thirdBottom = thisTime;
+                                thirdBottom = thisTime; // set the third bottom equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime > nextTime) // thistime is point 6
                                 {
-                                    thirdTop = thisTime;
+                                    thirdTop = thisTime; // set the third top equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime < nextTime) // thistime is point 5
                                     {
-                                        secondBottom = thisTime;
+                                        secondBottom = thisTime; // set the second bottom equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime > nextTime) // thistime is point 4
                                         {
-                                            secondTop = thisTime;
+                                            secondTop = thisTime; // set the second top equal to thistime
                                             thisTime = nextTime;
                                             nextTime = historic_data.ElementAt(j - (i * 7)).Close;
                                             if (thisTime < nextTime) // thistime is point 3
                                             {
-                                                firstBottom = thisTime;
+                                                firstBottom = thisTime; // set the first bottom equal to thistime
                                                 thisTime = nextTime;
                                                 nextTime = historic_data.ElementAt(j - (i * 8)).Close;
                                                 if (thisTime > nextTime && (Math.Max(thisTime, secondTop) / Math.Min(thisTime, secondTop)) < Convert.ToDecimal(1.02) &&
@@ -726,9 +739,14 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                     (Math.Max(firstBottom, secondBottom) / Math.Min(firstBottom, secondBottom)) < Convert.ToDecimal(1.02) &&
                                                     (Math.Max(secondBottom, thirdBottom) / Math.Min(secondBottom, thirdBottom)) < Convert.ToDecimal(1.02)) // thistime is point 2
                                                 {
+                                                    // if thistime and the secondtop are within 2 percent of each other and
+                                                    // the second top and the third top are within 2 percent and
+                                                    // the third top and the point eight are within 2 percent and
+                                                    // the first bottom and the second bottom are within 2 percent and
+                                                    // the second bottom and the third bottom are within 2 percent then...
                                                     //pattern found
                                                     Console.WriteLine("Bullish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
-                                                    File.AppendAllText(outputTxtFile, "Bullish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    File.AppendAllText(outputTxtFile, "Bullish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
                                                     string jsonImagePath = genChartReversed(patterns.bullishRectangle, symbol, j, i, 8);
                                                     stockObj bullishRectangle = new stockObj()
                                                     {
@@ -779,32 +797,32 @@ namespace DotNetFramework_Algorithm_Chart_Start
                         nextTime = historic_data.ElementAt(j - (i * 2)).Close;
                         if (thisTime < nextTime) //thistime is point 8
                         {
-                            pointEight = thisTime;
+                            pointEight = thisTime; // set the point eight equal to thistime
                             thisTime = nextTime;
                             nextTime = historic_data.ElementAt(j - (i * 3)).Close;
                             if (thisTime > nextTime) // thistime is point 7
                             {
-                                thirdTop = thisTime;
+                                thirdTop = thisTime; // set the thirdtop equal to thistime
                                 thisTime = nextTime;
                                 nextTime = historic_data.ElementAt(j - (i * 4)).Close;
                                 if (thisTime < nextTime) //thistime is point 6
                                 {
-                                    thirdBottom = thisTime;
+                                    thirdBottom = thisTime; // set the third bottom equal to thistime
                                     thisTime = nextTime;
                                     nextTime = historic_data.ElementAt(j - (i * 5)).Close;
                                     if (thisTime > nextTime) // thistime is point 5
                                     {
-                                        secondTop = thisTime;
+                                        secondTop = thisTime; // set the second top equal to thistime
                                         thisTime = nextTime;
                                         nextTime = historic_data.ElementAt(j - (i * 6)).Close;
                                         if (thisTime < nextTime) // thistime is point 4
                                         {
-                                            secondBottom = thisTime;
+                                            secondBottom = thisTime; // set the second bottom equal to thistime
                                             thisTime = nextTime;
                                             nextTime = historic_data.ElementAt(j - (i * 7)).Close;
                                             if (thisTime > nextTime) // thistime is point 3
                                             {
-                                                firstTop = thisTime;
+                                                firstTop = thisTime; // set the first top equal to thistime
                                                 thisTime = nextTime;
                                                 nextTime = historic_data.ElementAt(j - (i * 8)).Close;
                                                 if (thisTime < nextTime && (Math.Max(thisTime, secondBottom) / Math.Min(thisTime, secondBottom)) < Convert.ToDecimal(1.02) &&
@@ -813,9 +831,14 @@ namespace DotNetFramework_Algorithm_Chart_Start
                                                    (Math.Max(firstTop, secondTop) / Math.Min(firstTop, secondTop)) < Convert.ToDecimal(1.02) &&
                                                    (Math.Max(secondTop, thirdTop) / Math.Min(secondTop, thirdTop)) < Convert.ToDecimal(1.02))
                                                 {
+                                                    // if thistime and the second bottom are within 2 percent and
+                                                    // the second bottom and the third bottom are within 2 percent and
+                                                    // the third bottom and the point eight are within 2 percent and
+                                                    // the first top and the second top are within 2 percent and
+                                                    // the second top and the third top are within 2 percent then...
                                                     // pattern found
                                                     Console.WriteLine("Bearish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
-                                                    File.AppendAllText(outputTxtFile, "Bearish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days");
+                                                    File.AppendAllText(outputTxtFile, "Bearish Rectangle pattern found for symbol: " + symbol + " on: " + historic_data.ElementAt(j).DateTime.Date + " with interval: " + i + " days\n");
                                                     string jsonImagePath = genChartReversed(patterns.bearishRectangle, symbol, j, i, 8);
                                                     stockObj bearishRectangle = new stockObj()
                                                     {
