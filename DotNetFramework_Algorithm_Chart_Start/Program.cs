@@ -21,7 +21,7 @@ namespace DotNetFramework_Algorithm_Chart_Start
             string JSONfilename = Directory.GetCurrentDirectory() + "../../../chartdata.json"; // used to output json data to a persistent file, later transferred to server
 
             // tickers used to find patterns for
-            string[] tickers = { "PLTR", "LI", "TLRY", "UAVS", "NEPT", "SNDL", "FSKR", "RIDE",
+            string[] tickers = { "PLTR", "LI", "TLRY", "UAVS", "NEPT", "SNDL", "FSR", "RIDE",
             "RIOT", "HYLN", "APHA", "SPLP", "LMND", "WNW", "LAZR", "CRSR", "CNI"};
 
             DateTime endDate = DateTime.Today; // the end date is the most recent day, which is today
